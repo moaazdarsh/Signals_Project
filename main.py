@@ -8,7 +8,7 @@ All of the lines surrounded by arrows are for generating plots, they can be simp
 '''
 
 
-x_t, f_s = sf.read('Moaaz.wav')
+x_t, f_s = sf.read('Audio/Moaaz.wav')
 
 x_t = x_t.mean(axis=1) if x_t.ndim > 1 else x_t # Convert to mono
 t = np.linspace(0, len(x_t) / f_s, num=len(x_t)) # Define time domain
@@ -89,7 +89,7 @@ filtered_Xf_ax[0].set_title('50Hz Bandwidth Filtered Frequency Spectrum')
 
 # Applying IFFT and saving as .wav file
 x_t_50Hz_filtered = FT.ifft(FT.ifftshift(Notch_50Hz)).real
-sf.write('Moaaz_50Hz_Filtered.wav', x_t_50Hz_filtered, f_s)
+sf.write('Audio/Moaaz_50Hz_Filtered.wav', x_t_50Hz_filtered, f_s)
 
 #vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 filtered_xt_fig ,filtered_xt_ax = plt.subplots(1,3)
@@ -122,7 +122,7 @@ filtered_Xf_ax[1].set_title('100Hz Bandwidth Filtered Frequency Spectrum')
 
 # Applying IFFT and saving as .wav file
 x_t_100Hz_filtered = FT.ifft(FT.ifftshift(Notch_100Hz)).real
-sf.write('Moaaz_100Hz_Filtered.wav', x_t_100Hz_filtered, f_s)
+sf.write('Audio/Moaaz_100Hz_Filtered.wav', x_t_100Hz_filtered, f_s)
 
 #vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 filtered_xt_ax[1].plot(t, x_t_100Hz_filtered, color='k')
@@ -154,7 +154,7 @@ plt.close(filtered_Xf_fig)
 
 # Applying IFFT and saving as .wav file
 x_t_200Hz_filtered = FT.ifft(FT.ifftshift(Notch_200Hz)).real
-sf.write('Moaaz_200Hz_Filtered.wav', x_t_200Hz_filtered, f_s)
+sf.write('Audio/Moaaz_200Hz_Filtered.wav', x_t_200Hz_filtered, f_s)
 
 #vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 filtered_xt_ax[2].plot(t, x_t_200Hz_filtered, color='k')
