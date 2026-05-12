@@ -4,6 +4,10 @@
 \usepackage{amsthm}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{geometry}
+
+\newgeometry{a4paper, margin=1in}
+
 \newtheorem*{theorem*}{Theorem}
 
 \lstset{language=python, basicstyle=\ttfamily\small, 
@@ -68,11 +72,11 @@ time_ax.set_title('Audio Signal')
 time_fig.savefig('Moaaz_Signal.png')
 plt.close(time_fig)
 \end{lstlisting}
-\clearpage
+
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.75\textwidth]{Plots/Moaaz_Signal.png}
+    \includegraphics[width=0.6\textwidth]{Plots/Moaaz_Signal.png}
     \caption{Time Domain Signal}
     \label{fig:moaaz_signal}
 \end{figure}
