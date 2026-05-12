@@ -166,4 +166,13 @@ Notch_50Hz[len(X_f) - upper_bound:len(X_f) - lower_bound] = 0
     \label{fig:moaaz_filtered_time}
 \end{figure}
 
+\noindent
+We finally save the filtered signal using \texttt{soundfile}.
+
+\begin{lstlisting}
+# Applying IFFT and saving as .wav file
+x_t_50Hz_filtered = FT.ifft(FT.ifftshift(Notch_50Hz)).real
+sf.write('Audio/Moaaz_50Hz_Filtered.wav', x_t_50Hz_filtered, f_s)
+\end{lstlisting}
+
 \end{document}
