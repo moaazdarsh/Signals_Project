@@ -5,8 +5,25 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{geometry}
+\usepackage{fontspec}
+\lstset{
+  showstringspaces=false
+}
 
-\newgeometry{a4paper, margin=1in}
+\setmainfont[
+Path=./fonts/,
+BoldFont=SF-Pro-Rounded-Bold.otf,
+ItalicFont=SF-Pro-Rounded-Semibold.otf,
+ItalicFeatures={FakeSlant=0.2},
+BoldItalicFont=SF-Pro-Rounded-Bold.otf,
+BoldItalicFeatures={FakeSlant=0.2}
+]{SF-Pro-Rounded-Semibold.otf}
+\setmonofont[
+Path=./fonts/,
+Scale=MatchLowercase
+]{SF-Mono-Regular.otf}
+
+\newgeometry{margin=1in}
 
 \newtheorem*{theorem*}{Theorem}
 
@@ -17,8 +34,11 @@
 
 \begin{document}
     \begin{center}
+        \vspace*{-0.5in}
+        \includegraphics[width=100pt]{180207 ASU-Logo-Black-4000.png}
+        \\ \vspace{15pt}
 		\textbf{\huge Signals Project Report}
-        \\ \vspace{50pt}
+        \\ \vspace{30pt}
         \Large Ain Shams University \\ Faculty of Engineering
         \\ \vspace{15pt}
         \textbf{Under the Supervision of}
@@ -30,18 +50,18 @@
         \begin{tabular} { c  c  c }
             \textbf{Name} & \textbf{Code} & \textbf{Section} \\[5pt]
             \hline \\[-10pt]
-            \textit{\Large Mohamad Ibrahim} & \textit{\Large 2401339} & \textit{\Large 7} \\
+            \textit{\Large Moaaz Mostafa Ibrahim Ahmed} & \textit{\Large 2400862} & \textit{\Large 7} \\
+            \textit{\Large Mohamed Ibrahim Abdalla Ibrahim Abdelfattah} & \textit{\Large 2401339} & \textit{\Large 7} \\
             \textit{\Large Mohammad Abduljalil Mohammad Al Saeid} & \textit{\Large 2400877} & \textit{\Large 7} \\
-            \textit{\Large Mena Elia} & \textit{\Large 24*****} & \textit{\Large 7} \\
-            \textit{\Large Mohammad Hany} & \textit{\Large 2400615} & \textit{\Large 7} \\
-            \textit{\Large Moaz Wael} & \textit{\Large 240****} & \textit{\Large 7} \\
-            \textit{\Large Moaaz Mostafa Ibrahim} & \textit{\Large 2400862} & \textit{\Large 7} \\
+            \textit{\Large Mohammad Hany Ahmed Ali} & \textit{\Large 2400615} & \textit{\Large 7} \\
+            \textit{\Large Moaz Wael Mahmoud Mohamed} & \textit{\Large 2400733} & \textit{\Large 7} \\
+            \textit{\Large Mena Elia Rady Ghargoury} & \textit{\Large 2400609} & \textit{\Large 7} \\
         \end{tabular}
 	\end{center}
 \clearpage
 
 \section{Tools Used}
-To be able to implement this project in python multiple libraries must be imported for audio file reading/writing, FFT, array manipulation, and graphing.
+\indent To be able to implement this project in python multiple libraries must be imported for audio file reading/writing, FFT, array manipulation, and graphing.
 For audio files, \texttt{soundfile} was used. \texttt{Numpy} was used for FFT, IFFT, and array manipulation, along with \texttt{matplotlib} for plotting.
 
 \section{Time Domain Signal}
@@ -114,17 +134,17 @@ If we calculate the energy of the signal in the frequency domain over a single p
     E = \sum_{k=0}^{N-1} |X(k)|^2 \approx 8533804.3
 \end{equation*}
 \noindent
-But Perseval's theorem says that the energy in both domains should be equal!
-Now we must remember that a computer doesn't calculate CTFT, it calculates DTFT where Perseval's theorem has different statement.
+But Parseval's theorem says that the energy in both domains should be equal!
+Now we must remember that a computer doesn't calculate CTFT, it calculates DTFT where Parseval's theorem has different statement.
 
-\begin{theorem*}[Perseval's Theorem for DTFT]
+\begin{theorem*}[Parseval's Theorem for DTFT]
     \begin{equation*}
         \sum_{n=-\infty}^{\infty} |x(n)|^2 = \frac{1}{2\pi} \int_{-\pi}^{\pi} |X(e^{j\omega})|^2 d\omega
     \end{equation*}
 \end{theorem*}
 
 \noindent
-So if we calculate the \textit{average power} of the frequency domain signal using \lstinline|np.mean(np.abs(X_f)**2)| we can verify Perseval's theorem in this case.
+So if we calculate the \textit{average power} of the frequency domain signal using \lstinline|np.mean(np.abs(X_f)**2)| we can verify Parseval's theorem in this case.
 \begin{equation*}
     \bar{P} = \frac{1}{N} \sum_{k=0}^{N-1} |X(k)|^2 \approx 46.3
 \end{equation*}
