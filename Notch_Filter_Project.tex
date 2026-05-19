@@ -1,34 +1,41 @@
-\documentclass{article}
+\documentclass[a4paper]{article}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{geometry}
-\usepackage{fontspec}
+\usepackage{iftex}
+
 \lstset{
   showstringspaces=false
 }
 
-\setmainfont[
-Path=./fonts/,
-BoldFont=SF-Pro-Rounded-Bold.otf,
-ItalicFont=SF-Pro-Rounded-Semibold.otf,
-ItalicFeatures={FakeSlant=0.2},
-BoldItalicFont=SF-Pro-Rounded-Bold.otf,
-BoldItalicFeatures={FakeSlant=0.2}
-]{SF-Pro-Rounded-Semibold.otf}
-\setmonofont[
-Path=./fonts/,
-Scale=MatchLowercase
-]{SF-Mono-Regular.otf}
+\ifPDFTeX
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+\else
+    \usepackage{fontspec}
+    \setmainfont[
+        Path=./fonts/,
+        BoldFont=SF-Pro-Rounded-Bold.otf,
+        ItalicFont=SF-Pro-Rounded-Semibold.otf,
+        ItalicFeatures={FakeSlant=0.2},
+        BoldItalicFont=SF-Pro-Rounded-Bold.otf,
+        BoldItalicFeatures={FakeSlant=0.2}
+    ]{SF-Pro-Rounded-Semibold.otf}
+    \setmonofont[
+        Path=./fonts/,
+        Scale=MatchLowercase
+    ]{SF-Mono-Regular.otf}
+\fi
 
 \newgeometry{margin=1in}
 
 \newtheorem*{theorem*}{Theorem}
 
 \lstset{language=python, basicstyle=\ttfamily\small, 
-        keywords={read, mean, subplots, plot, set_xlabel, set_ylabel, set_title, savefig, close, copy, linspace, fft, fftshift, argmax, ifft, ifftshift},
+        keywords={import, as, read, mean, subplots, plot, set_xlabel, set_ylabel, set_title, savefig, close, copy, linspace, fft, fftshift, argmax, ifft, ifftshift},
         keywordstyle=\color{purple}, commentstyle=\color{gray}, stringstyle=\color{blue}}
 \setcounter{section}{-1}
 
@@ -61,8 +68,16 @@ Scale=MatchLowercase
 \clearpage
 
 \section{Tools Used}
-\indent To be able to implement this project in python multiple libraries must be imported for audio file reading/writing, FFT, array manipulation, and graphing.
-For audio files, \texttt{soundfile} was used. \texttt{Numpy} was used for FFT, IFFT, and array manipulation, along with \texttt{matplotlib} for plotting.
+To implement this project in python multiple libraries must be imported for audio file reading/writing, FFT, array manipulation, and graphing.
+For audio files, \texttt{soundfile} was used as "\texttt{sf}" in the code. \texttt{Numpy} was used (as "\texttt{np}" and "\texttt{FT}") for FFT, IFFT, and array manipulation.
+Along with \texttt{matplotlib} as "\texttt{plt}" for plotting.
+
+\begin{lstlisting}
+import numpy as np
+import numpy.fft as FT
+import matplotlib.pyplot as plt
+import soundfile as sf
+\end{lstlisting}
 
 \section{Time Domain Signal}
 A few lines of code can be used to extract the audio signal and plot it provided the audio file is in \texttt{.wav} format.
@@ -134,7 +149,7 @@ If we calculate the energy of the signal in the frequency domain over a single p
     E = \sum_{k=0}^{N-1} |X(k)|^2 \approx 8533804.3
 \end{equation*}
 \noindent
-But Parseval's theorem says that the energy in both domains should be equal!
+But Parseval's theorem states that the energy in both domains is equal!
 Now we must remember that a computer doesn't calculate CTFT, it calculates DTFT where Parseval's theorem has different statement.
 
 \begin{theorem*}[Parseval's Theorem for DTFT]
@@ -150,7 +165,7 @@ So if we calculate the \textit{average power} of the frequency domain signal usi
 \end{equation*}
 
 \noindent
-But to find the exact frequency with maximum contribution to the signal we can use a very useful function in \texttt{numpy} called \lstinline|argmax|.
+And to find the exact frequency with maximum contribution to the signal we can use a very useful function in \texttt{numpy} called \lstinline|argmax|.
 \begin{lstlisting}
 index_max = np.argmax(np.abs(X_f))
 f_max = f[index_max]
@@ -159,9 +174,11 @@ And we find that frequency to be $\approx 202.6$ Hz.
 
 \section{Notch Filter}
 Given the Fourier transform of the signal we can implement an ideal notch filter by simply removing any desired frequency band.
-We implemented this notch filter with a bandwidth of 50, 100, and 200 Hz with the shown results.
+We implemented this notch filter with a bandwidth of 50, 100, and 200 Hz around the maximum frequency.
+Here, we plot the resulting frequency spectrum and time domain signal in each case.
 
 \begin{lstlisting}
+df = f[1] - f[0] # The smallest frequency increment
 bw = 50 # Notch filter bandwidth
 window = bw//df
 lower_bound = int(index_max - window//2)
@@ -187,7 +204,7 @@ Notch_50Hz[len(X_f) - upper_bound:len(X_f) - lower_bound] = 0
 \end{figure}
 
 \noindent
-We finally save the filtered signal using \texttt{soundfile}.
+We finally save the filtered signals using \texttt{soundfile}.
 
 \begin{lstlisting}
 # Applying IFFT and saving as .wav file
